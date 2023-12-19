@@ -1,60 +1,18 @@
-# Dual Diffusion Implicit Bridges (ICLR 2023)
+# DDPM Based on The Dual Diffusion Implicit Bridges
 
-Code Running Comments
-This code run on colab
+This project experiment ultimately achieved the results in the paper: Dual Diffusion Implicit Bridges (ICLR 2023)
+
+Code Running Comments:
+
+This code need imagenet file to run.
+
+! python download.py --exp imagenet
+
 The exact file and folder locations are shown in the image：
 
+![image](https://github.com/MrYao-Gong/Project1/assets/154312757/c345a681-73c1-49ad-b255-1aa3edbc9481)
 
-## Overview
 
-Common image-to-image translation methods rely on joint training over data from both source and target domains. The
-training process requires concurrent access to both datasets, which hinders data separation and privacy protection; and
-existing models cannot be easily adapted to translation of new domain pairs. We present Dual Diffusion Implicit
-Bridges (DDIBs), an image translation method based on diffusion models, that circumvents training on domain pairs. Image
-translation with DDIBs relies on two diffusion models trained independently on each domain, and is a two-step process:
-DDIBs first obtain latent encodings for source images with the source diffusion model, and then decode such encodings
-using the target model to construct target images. Both steps are defined via ordinary differential equations (ODEs),
-thus the process is cycle consistent only up to discretization errors of the ODE solvers. Theoretically, we interpret
-DDIBs as concatenation of source to latent, and latent to target Schrödinger Bridges, a form of entropy-regularized
-optimal transport, to explain the efficacy of the method. Experimentally, we apply DDIBs on synthetic and
-high-resolution image datasets, to demonstrate their utility in a wide variety of translation tasks and their inherent
-optimal transport properties.
-
-## Installation
-
-Installation follows the same procedures as in the above repositories.
-
-We first install the current repository, and then install other libraries like `numpy, matplotlib` etc. My successful
-installation contains the following version numbers, with Python 3.9:
-
-```commandline
-pip install -e .
-pip install numpy==1.24.0 matplotlib==3.6.2 scikit-image==0.19.3 scikit-learn==1.2.0 gdown==4.6.0
-conda install -c conda-forge mpi4py openmpi
-```
-
-## Synthetic Models
-
-We release pretrained checkpoints for the 2D synthetic models in the paper.
-
-### Installation
-
-**Downloading via script**: In your repository, run `python download.py --exp synthetic` to download the pretrained
-synthetic models. The
-script will create a directory `models/synthetic` and automatically download the checkpoints to the directory.
-
-**Downloading manually**: As an alternative, you can also download the checkpoint manually. Here is the download link
-for the model
-checkpoints: [Synthetic Models](https://drive.google.com/drive/folders/1YRP6nt96OJUOzEYY6N_Qh5xb3wEVFSjg?usp=sharing)
-
-**Indexes**. We use indexes 0-5 to refer to the 6 synthetic types,
-in: [Moons, Checkerboards, Concentric Rings, Concentric Squares, Parallel Rings, Parallel Squares].
-
-**How are the datasets generated?** The key file to look at is: `guided_diffusion/synthetic_datasets.py`. We implement
-the data generation and sampling processes for various 2D modalities.
-
-After running the download script, we can run the cycle consistency, synthetic translation and sampling experiments
-below.
 
 ### Training Synthetic Models
 
@@ -128,24 +86,3 @@ strengths.
 We can prepend the Python command with `mpiexec -n N` to run it over multiple GPUs. For details, refer
 to [guided-diffusion](https://github.com/openai/guided-diffusion).
 
-## References and Acknowledgements
-
-```
-@inproceedings{
-      su2022dual,
-      title={Dual Diffusion Implicit Bridges for Image-to-Image Translation},
-      author={Su, Xuan and Song, Jiaming and Meng, Chenlin and Ermon, Stefano},
-      booktitle={International Conference on Learning Representations},
-      year={2023},
-}
-```
-
-This implementation is based on / inspired by:
-OpenAI: [openai/guided-diffusion](https://github.com/openai/guided-diffusion)
-and [openai/improved-diffusion](https://github.com/openai/improved-diffusion).
-
-## To-do List
-
-* Release pretrained models on AFHQ and yosemite datasets
-* Add color translation experiments
-* Add scripts to translate between AFHQ, yosemite images
